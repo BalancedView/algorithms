@@ -1,27 +1,19 @@
-def quick_sort(array)
-  return array if array.size <= 1
-  pivot_index = array.size / 2
-  sorted_array = quick_sort_helper(array, pivot_index)
-  array1 = sorted_array[0..pivot_index-1]
-  array2 = sorted_array[pivot_index..array.length-1]
-  quick_sort(array1) + quick_sort(array2)
-end
+def quick_sort(array, l_bound=0, u_bound=array.size-1)
+  return array if u_bound <= l_bound || l_bound >= u_bound
+  pivot_index = l_bound
+  pivot_val = array[pivot_index]
+  low_up_bound_index = l_bound+1
 
-def quick_sort_helper(array, pivot_index)
-  lesser = []
-  greater = []
-  pivot = []
-  array.each do |e|
-    if e > array[pivot_index]
-      greater << e
-    elsif e < array[pivot_index]
-      lesser << e
-    else
-      pivot << e
+  (l_bound+1).upto(u_bound) do |index|
+    if array[index] <= pivot_val
+      array[low_up_bound_index], array[index] = array[index], array[low_up_bound_index]
+      low_up_bound_index += 1
     end
   end
-  lesser + pivot + greater
+  array[pivot_index], array[low_up_bound_index-1] = array[low_up_bound_index-1], array[pivot_index]
+
+  array = quick_sort(array, low_up_bound_index, u_bound)
+  quick_sort(array, l_bound, low_up_bound_index-2)
 end
 
-p quick_sort([1,21,55,6,33,100])
-p quick_sort([1,1000,90,1002,100,90,500,100])
+p quick_sort([1,21,55,6,33,100]) == [1, 6, 21, 33, 55, 100]
