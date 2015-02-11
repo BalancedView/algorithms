@@ -10,6 +10,10 @@ class UnionFind
     find_root(node1) == find_root(node2)
   end
 
+  def connected_r?(node1, node2)
+    find_root_r(node1) == find_root_r(node2)
+  end
+
   def union(node1, node2)
     root1 = find_root(node1)
     root2 = find_root(node2)
@@ -67,24 +71,34 @@ end
 require 'benchmark'
 
 uf = UnionFind.new(10_000_000)
-ur = uf.dup
-uw = uf.dup
 
 Benchmark.bmbm do |x|
   x.report("while find_root") do
+    uw = uf.dup
     srand 12345
     1_000_000.times do
       uw.union(rand(2_500_000),rand(2_500_001..5_000_000))
       uw.union(rand(5_000_001..7_500_000),rand(7_500_001..10_000_000))
+    end
+    1_000_000.times do
       uw.union(rand(5_000_000),rand(5_000_001..10_000_000))
+    end
+    1_000_000.times do
+      uw.connected?(rand(5_000_000),rand(5_000_001..10_000_000))
     end
   end
   x.report("recursive find_root") do
+    ur = uf.dup
     srand 12345
     1_000_000.times do
       ur.union_r(rand(2_500_000),rand(2_500_001..5_000_000))
       ur.union_r(rand(5_000_001..7_500_000),rand(7_500_001..10_000_000))
+    end
+    1_000_000.times do
       ur.union_r(rand(5_000_000),rand(5_000_001..10_000_000))
+    end
+    1_000_000.times do
+      ur.connected_r?(rand(5_000_000),rand(5_000_001..10_000_000))
     end
   end
 end
