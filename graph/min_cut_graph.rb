@@ -67,9 +67,9 @@ class Graph
   end
 end
 
-graph = Graph.new("kargerMinCut.txt")
-# graph = Graph.new("test_list1.txt")
-# graph = Graph.new("test_list.txt")
+graph = Graph.new("../test_data/graph/kargerMinCut.txt")
+# graph = Graph.new("../test_data/graph/test_list1.txt")
+# graph = Graph.new("../test_data/graph/test_list.txt")
 
 t = Time.now
     graph.find_min_cut

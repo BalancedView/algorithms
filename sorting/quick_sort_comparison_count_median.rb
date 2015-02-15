@@ -35,8 +35,8 @@ def select_median_pivot(array, l_bound, u_bound)
 end
 
 parse = Proc.new {|n| n.chomp; n.to_i }
-quick_sort_list = File.readlines('QuickSort.txt').map(&parse)
-test_case = File.readlines('1000.txt').map(&parse)
+quick_sort_list = File.readlines('../test_data/sorting/QuickSort.txt').map(&parse)
+test_case = File.readlines('../test_data/sorting/1000.txt').map(&parse)
 
 p quick_sort([1,2,3,4,7,5,3,5])
 p quick_sort(test_case)[1]

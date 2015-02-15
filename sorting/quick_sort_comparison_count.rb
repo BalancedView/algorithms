@@ -19,8 +19,8 @@ def quick_sort(array, l_bound=0, u_bound=array.size-1, count=array.size-1)
 end
 
 parse = Proc.new {|n| n.chomp; n.to_i }
-quick_sort_list = File.readlines('QuickSort.txt').map(&parse)
-test_case = File.readlines('1000.txt').map(&parse)
+quick_sort_list = File.readlines('../test_data/sorting/QuickSort.txt').map(&parse)
+test_case = File.readlines('../test_data/sorting/1000.txt').map(&parse)
 
 p quick_sort([5,1,2,3,4])
 p quick_sort(quick_sort_list)
