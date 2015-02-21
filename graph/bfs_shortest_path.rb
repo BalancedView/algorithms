@@ -71,9 +71,8 @@ class Graph
   end
 
   def add_col_neighbors(index)
-    row_position = (index % @row_size)
     [index-@row_size, index+@row_size].each do |neighbor|
-      next if (neighbor % @row_size != row_position) || @map_string[neighbor] == @wall
+      next if (not (0..@map_string.size-1) === neighbor) || @map_string[neighbor] == @wall
       @vertices_adj[index] << neighbor
     end
   end
