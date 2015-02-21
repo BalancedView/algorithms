@@ -14,9 +14,11 @@ I thought it would be useful to divide scripts based either on application or da
   - [Union Find - While vs Recursion Benchmark](graph/union_find_benchmarks.rb)
   - [Find Strong Connected Components in a Graph](graph/scc_graph.rb)
   - [Find the Minimum Cut in a Graph](graph/min_cut_graph.rb)
+  - [Use BFS in a Graph to find path in a maze](graph/bfs_shortest_path.rb)
 
 - Primitives
   - [Stack](primitives/stack.rb)
+  - [Queue](primitives/queue.rb)
 
 - Sorting
   - [Merge Sort](sorting/merge_sort.rb)
