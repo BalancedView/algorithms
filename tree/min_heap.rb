@@ -1,36 +1,40 @@
+# This Heap expects an object that responds to #id so that it can easily update values
+
 class MinHeap
 
   def initialize
     @heap = []
+    @id_to_position = []
   end
 
   def add(value)
     value_i = @heap.size
+    @id_to_position[value.id] = value_i
     @heap << value
     bubble_up(value_i)
     value
   end
 
-  def delete(i=0)
+  def delete_at(i)
     i_value = @heap[i]
+    @id_to_position[i_value.id] = nil
     @heap[i] = @heap.pop
     bubble_down(i)
     i_value
   end
 
-  def to_s
-    levels = Math.log2(@heap.size).floor
-    print " " * (1 << levels)
-    puts @heap[0]
-    1.upto(levels) do |n|
-      start_i = (1 << n) - 1
-      print " " * (1 << levels-n+1)
-      @heap[start_i..(start_i << 1)].each do |val|
-        print val
-        print " "
-      end
-      puts
-    end
+  def extract_min
+    delete_at(0)
+  end
+
+  def peek(id)
+    @heap[@id_to_position[id]]
+  end
+
+  def decrease(meth, value, id)
+    value_i = @id_to_position[id]
+    @heap[value_i].send(meth, value)
+    bubble_up(value_i)
   end
 
   private
@@ -66,6 +70,8 @@ class MinHeap
   end
 
   def swap_at(child_i, parent_i)
+    @id_to_position[@heap[child_i].id] = parent_i
+    @id_to_position[@heap[parent_i].id] = child_i
     @heap[child_i], @heap[parent_i] = @heap[parent_i], @heap[child_i]
   end
 
