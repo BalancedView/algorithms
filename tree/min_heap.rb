@@ -1,40 +1,76 @@
-# This Heap expects an object that responds to #id so that it can easily update values
+# NOTES:
+# The heap uses #object_id to track at what index the values are in the array
+# The initialize takes:
+#  - an optional array that can be "heapified"
+#  - an optional priority_meth_sym a symbol that will be sent to the object to determine its priority
+#  - an optional update_meth_sym that will be used when using decrease_key, if no method is passed the value will replace the object itself
 
 class MinHeap
 
-  def initialize
-    @heap = []
-    @id_to_position = []
+  def initialize(array=[], priority_meth_sym=:itself, update_meth_sym=nil)
+    @heap = array
+    @id_to_index = {}
+    @priority_sym = priority_meth_sym
+    @update_sym = update_meth_sym
+    heapify!
   end
 
   def add(value)
     value_i = @heap.size
-    @id_to_position[value.id] = value_i
+    @id_to_index[value.object_id] = value_i
     @heap << value
     bubble_up(value_i)
     value
   end
 
   def delete_at(i)
-    i_value = @heap[i]
-    @id_to_position[i_value.id] = nil
-    @heap[i] = @heap.pop
+    value = @heap[i]
+    @id_to_index.delete(value.object_id)
+    new_value = @heap.pop
+    return value if @heap.empty?
+    @heap[i] = new_value
     bubble_down(i)
-    i_value
+    value
   end
 
   def extract_min
     delete_at(0)
   end
 
-  def peek(id)
-    @heap[@id_to_position[id]]
+  def index_of(obj)
+    @id_to_index[obj.object_id]
   end
 
-  def decrease(meth, value, id)
-    value_i = @id_to_position[id]
-    @heap[value_i].send(meth, value)
+  def [](index)
+    @heap[index]
+  end
+
+  def decrease_key(obj, value)
+    value_i = index_of(obj)
+    if @update_sym
+      @heap[value_i].send(@update_sym, value)
+    else
+      @heap[value_i] = value
+    end
     bubble_up(value_i)
+  end
+
+  def empty?
+    @heap.empty?
+  end
+
+  def heapify!
+    return true if @heap.empty?
+    (@heap.size-1).downto(1) do |i|
+      bubble_up(i)
+    end
+    @heap.each.with_index do |value, i|
+      @id_to_index[value.object_id] || @id_to_index[value.object_id] = i
+    end
+  end
+
+  def size
+    @heap.size
   end
 
   private
@@ -65,19 +101,19 @@ class MinHeap
   end
 
   def children_smaller?(parent_i)
-    left(parent_i) && @heap[parent_i] > left(parent_i) or
-    right(parent_i) && @heap[parent_i] > right(parent_i)
+    left(parent_i) && priority(@heap[parent_i]) > priority(left(parent_i)) or
+    right(parent_i) && priority(@heap[parent_i]) > priority(right(parent_i))
   end
 
   def swap_at(child_i, parent_i)
-    @id_to_position[@heap[child_i].id] = parent_i
-    @id_to_position[@heap[parent_i].id] = child_i
+    @id_to_index[@heap[child_i].object_id] = parent_i
+    @id_to_index[@heap[parent_i].object_id] = child_i
     @heap[child_i], @heap[parent_i] = @heap[parent_i], @heap[child_i]
   end
 
   def bubble_up(value_i)
     parent_i = parent(value_i)
-    while @heap[value_i] < @heap[parent_i]
+    while priority(@heap[value_i]) < priority(@heap[parent_i])
       swap_at(value_i, parent_i)
       value_i = parent_i
       parent_i = parent(parent_i)
@@ -86,7 +122,7 @@ class MinHeap
 
   def bubble_down(parent_i)
     while children_smaller?(parent_i)
-      if (left(parent_i) or Float::INFINITY) < (right(parent_i) or Float::INFINITY)
+      if (priority(left(parent_i)) or Float::INFINITY) < (priority(right(parent_i)) or Float::INFINITY)
         swap_at(left_i(parent_i), parent_i)
         parent_i = left_i(parent_i)
       else
@@ -96,4 +132,7 @@ class MinHeap
     end
   end
 
+  def priority(obj)
+    obj.send(@priority_sym) if obj
+  end
 end
