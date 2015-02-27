@@ -1,4 +1,4 @@
-require_relative "../primitives/queue.rb"
+require_relative "../list/queue.rb"
 
 class Graph
 

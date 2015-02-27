@@ -6,7 +6,7 @@ An example of to this in jruby:
 jruby -J-Xmn512m -J-Xms2048m -J-Xmx2048m -J-Xss48000k scc_graph.rb
 =end
 
-require_relative "../primitives/stack.rb"
+require_relative "../list/stack.rb"
 
 class Graph
 

@@ -15,10 +15,14 @@ I thought it would be useful to divide scripts based either on application or da
   - [Find Strong Connected Components in a Graph](graph/scc_graph.rb)
   - [Find the Minimum Cut in a Graph](graph/min_cut_graph.rb)
   - [Use BFS in a Graph to find path in a maze](graph/bfs_shortest_path.rb)
+  - [Dijkstra find shortest path for a vertex to all other](graph/dijkstra_shortest_path.rb)
 
-- Primitives
-  - [Stack](primitives/stack.rb)
-  - [Queue](primitives/queue.rb)
+- Tree like structures
+  - [Heap (min heap)](tree/min_heap.rb)
+
+- List structures
+  - [Stack](list/stack.rb)
+  - [Queue](list/queue.rb)
 
 - Sorting
   - [Merge Sort](sorting/merge_sort.rb)
