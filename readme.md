@@ -20,6 +20,9 @@ I thought it would be useful to divide scripts based either on application or da
 - Tree like structures
   - [Heap (min heap)](tree/min_heap.rb)
 
+- Hash Table
+  - [Using a hash table to solve the 2sum problem](hash/2sum.rb)
+
 - List structures
   - [Stack](list/stack.rb)
   - [Queue](list/queue.rb)
