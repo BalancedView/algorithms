@@ -1,7 +1,6 @@
-require 'set'
 def init
   @num_buckets = {}
-  @num_set = Set.new
+  @num_array = []
   @t_values = {}
 end
 
@@ -14,13 +13,13 @@ def parse_input(file_path, t)
       else
         @num_buckets[num/t] = [num]
       end
-      @num_set << num
+      @num_array << num
     end
   end
 end
 
 def find_xy(t, t_min, t_max)
-  @num_set.each do |num_x|
+  @num_array.each do |num_x|
     y_bucket = (t_min - num_x) / t
     y_bucket.upto(y_bucket+1) do |bucket|
       if @num_buckets[bucket]
@@ -49,3 +48,13 @@ Benchmark.bmbm do |x|
   x.report("find t") { find_xy(t, t_min, t_max) }
 end
 
+# Rehearsal ------------------------------------------
+# init     0.000000   0.000000   0.000000 (  0.000004)
+# parse    1.470000   0.060000   1.530000 (  1.533582)
+# find t   1.820000   0.010000   1.830000 (  1.831254)
+# --------------------------------- total: 3.360000sec
+
+#              user     system      total        real
+# init     0.000000   0.000000   0.000000 (  0.000006)
+# parse    1.500000   0.030000   1.530000 (  1.527416)
+# find t   1.840000   0.000000   1.840000 (  1.844313)
