@@ -22,6 +22,8 @@ I thought it would be useful to divide scripts based either on application or da
 
 - Hash Table
   - [Using a hash table to solve the 2sum problem](hash/2sum.rb)
+  - [NOT using a hash table to solve 2sum problem](hash/2sum.rb)
+    the code not using the hash table to narrow down the values is not as elegant but about 350% faster!
 
 - List structures
   - [Stack](list/stack.rb)
