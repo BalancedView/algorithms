@@ -36,7 +36,7 @@ class Graph
   def parse_verticies_adj_list(adj_list_file)
     File.open(adj_list_file, "r") do |f|
       f.each do |vertex_adj_string|
-        string_array = vertex_adj_string.chomp.split(/\s/)
+        string_array = vertex_adj_string.split(/\s/)
         vertex_id = string_array[0].to_i
         @vertices[vertex_id] = Vertex.new(
             id: vertex_id,

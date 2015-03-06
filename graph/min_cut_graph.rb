@@ -14,7 +14,7 @@ class Graph
 
   def parse_verticies_adj_list(adj_list_file)
     list = File.readlines(adj_list_file)
-    list.each_index { |i| list[i] = list[i].chomp.split("\s").map(&:to_i)[1..-1] }
+    list.each_index { |i| list[i] = list[i].split("\s").map(&:to_i)[1..-1] }
     @verticies_size = list.size
     # prepend nil value so that I can treat indexes as the vertex value 1 to N
     list.unshift(nil)

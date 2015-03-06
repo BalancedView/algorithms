@@ -24,7 +24,7 @@ class Graph
   def parse_edges_list(edges_list_file)
     File.open(edges_list_file, "r") do |f|
       f.each do |edge_string|
-        edge = edge_string.chomp.split("\s").map(&:to_i)
+        edge = edge_string.split("\s").map(&:to_i)
 
         if @vertices_adj[edge[0]]
           @vertices_adj[edge[0]] << edge[1]

@@ -24,7 +24,6 @@ def merge_sort_inv(array)
   [array, inversions]
 end
 
-parse = Proc.new {|n| n.chomp; n.to_i }
-unsorted_list = File.readlines('../test_data/sorting/unsorted_list.txt').map(&parse)
+unsorted_list = File.readlines('../test_data/sorting/unsorted_list.txt').map(&:to_i)
 
 p merge_sort_inv(unsorted_list)[1]
