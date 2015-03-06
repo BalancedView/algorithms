@@ -19,6 +19,8 @@ I thought it would be useful to divide scripts based either on application or da
 
 - Tree like structures
   - [Heap (min heap)](tree/min_heap.rb)
+  - [Heap (max heap)](tree/max_heap.rb)
+  - [HeapMedian - maintain the median using 2 heaps](tree/heap_median_maintenance.rb)
 
 - Hash Table
   - [Using a hash table to solve the 2sum problem](hash/2sum.rb)
