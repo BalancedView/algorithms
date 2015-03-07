@@ -9,7 +9,7 @@ They include many useful and classic examples that are used in many applications
 
 I thought it would be useful to divide scripts based either on application or data structure
 
-- Graphs
+###Graphs###
   - [Union Find](graph/union_find.rb)
   - [Union Find - While vs Recursion Benchmark](graph/union_find_benchmarks.rb)
   - [Find Strong Connected Components in a Graph](graph/scc_graph.rb)
@@ -17,21 +17,21 @@ I thought it would be useful to divide scripts based either on application or da
   - [Use BFS in a Graph to find path in a maze](graph/bfs_shortest_path.rb)
   - [Dijkstra find shortest path for a vertex to all other](graph/dijkstra_shortest_path.rb)
 
-- Tree like structures
+###Tree like structures###
   - [Heap (min heap)](tree/min_heap.rb)
   - [Heap (max heap)](tree/max_heap.rb)
   - [HeapMedian - maintain the median using 2 heaps](tree/heap_median_maintenance.rb)
 
-- Hash Table
+###Hash Table###
   - [Using a hash table to solve the 2sum problem](hash/2sum.rb)
   - [NOT using a hash table to solve 2sum problem](hash/2sum.rb)
     the code not using the hash table to narrow down the values is not as elegant but about 350% faster!
 
-- List structures
+###List structures###
   - [Stack](list/stack.rb)
   - [Queue](list/queue.rb)
 
-- Sorting
+###Sorting###
   - [Merge Sort](sorting/merge_sort.rb)
     - [Count Inversions Made by Merge Sort](sorting/merge_sort_inversions.rb)
   - [Quick Sort](sorting/quick_sort.rb)
@@ -42,4 +42,9 @@ I thought it would be useful to divide scripts based either on application or da
     - [Quick Sort - pivot: median element](sorting/quick_sort_comparison_count_median.rb)
   - [Quick Sort JS](sorting/quick_sort.js)
 
+###Misc - other interesting problems solved with algorithms###
+  - [Solve the Tower of Hanoi problem](misc/tower_of_hanoi.rb)
+
+
 all the data used can be found in the [test_data directory](test_data)
+
