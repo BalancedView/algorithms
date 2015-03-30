@@ -11,6 +11,7 @@
    once we have a job_list we can use the built in reduce to calculate
    total_time and total_weight using the calc_weight callback function
 """
+from functools import reduce
 
 def line_to_int_list(line_seq):
     for line in line_seq:
