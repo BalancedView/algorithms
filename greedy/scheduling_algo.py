@@ -22,10 +22,13 @@ def file_gen(file_name):
         for line in myfile:
             yield line
 
-def calc_weight(time_weight_dict, job):
-    time_weight_dict['total_time'] += job[1]
-    time_weight_dict['total_weight'] += time_weight_dict['total_time'] * job[0]
-    return time_weight_dict
+def calc_weight(job_list):
+    total_time = 0
+    total_weight = 0
+    for job in job_list:
+        total_time += job[1]
+        total_weight += total_time * job[0]
+    return total_weight
 
 int_lists_from_file = line_to_int_list(file_gen('../test_data/greedy/jobs.txt'))
 
@@ -33,4 +36,4 @@ job_list = sorted(int_lists_from_file,
                   key=lambda job: (-(job[0] - job[1]),
                                    -job[0]))
 
-print(reduce(calc_weight, job_list, {'total_time': 0, 'total_weight': 0}))
+print(calc_weight(job_list))
