@@ -28,16 +28,18 @@ class Graph():
                 yield line
 
     def parse_edges_from_file(self, line_seq):
-        "get the number of vertices as given in the first line of file"
+        """get the number of vertices as given in the first line of file
+           setup the vertices as a tuple so we don't waste memory
+           populate the __vertecies tuple with lists of tuples of vertex,cost
+        """
         num_verticies = int(next(line_seq).split()[0])
-        "setup the vertices as a tuple so we don't waste memory"
         self.__vertecies = tuple({ 'visited': False, 'v':[] } \
                                  for n in range(num_verticies+1))
-        "populate the __vertecies tuple with lists of tuples of vertex,cost"
         for line in line_seq:
-            vertex, connected_vertex, cost = [int(num) for num in line.split()]
-            self.__vertecies[vertex]['v'].append((connected_vertex, cost))
-            self.__vertecies[connected_vertex]['v'].append((vertex, cost))
+            line_list = line.split()
+            vertex, neighbor, cost = int(line_list[0]), int(line_list[1]), int(line_list[2])
+            self.__vertecies[vertex]['v'].append((neighbor, cost))
+            self.__vertecies[neighbor]['v'].append((vertex, cost))
 
     def prim_mst(self):
         "pick a random start_vertex then extract from heap until empty"
@@ -58,10 +60,7 @@ class Graph():
         for neighbor, cost in self.__vertecies[vertex]['v']:
             heap_entry = self.__vertex_to_heap[neighbor]
             if not self.is_visited(neighbor) and cost < heap_entry.get_priority():
-                try:
-                    self.__heap.decrease_key(heap_entry, cost)
-                except (ValueError, KeyError):
-                    pass
+                self.__heap.decrease_key(heap_entry, cost)
 
     def mark_visited(self, vertex):
         self.__vertecies[vertex]['visited'] = True
