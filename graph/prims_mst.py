@@ -3,8 +3,9 @@
    don't store the actual edges. Doing so would be a very simple change
 """
 
-from fibonacci_heap_mod import Fibonacci_heap, Entry
+from fibonacci_heap_mod import Fibonacci_heap
 from random import randint
+
 
 class Graph():
     """simple Graph class to run Prim's MST algorithm"""
@@ -22,7 +23,7 @@ class Graph():
             self.__vertex_to_heap[x] = self.__heap.enqueue(x, 999999999)
 
     def file_lines(self, file_name):
-        "simple lines generator"
+        """simple lines generator"""
         with open(file_name) as myfile:
             for line in myfile:
                 yield line
@@ -33,16 +34,19 @@ class Graph():
            populate the __vertecies tuple with lists of tuples of vertex,cost
         """
         num_verticies = int(next(line_seq).split()[0])
-        self.__vertecies = tuple({ 'visited': False, 'v':[] } \
-                                 for n in range(num_verticies+1))
+        self.__vertecies = tuple({'visited': False, 'v': []}
+                                 for n in range(num_verticies+1)
+                                 )
+
         for line in line_seq:
             line_list = line.split()
-            vertex, neighbor, cost = int(line_list[0]), int(line_list[1]), int(line_list[2])
+            vertex, neighbor = int(line_list[0]), int(line_list[1])
+            cost = int(line_list[2])
             self.__vertecies[vertex]['v'].append((neighbor, cost))
             self.__vertecies[neighbor]['v'].append((vertex, cost))
 
     def prim_mst(self):
-        "pick a random start_vertex then extract from heap until empty"
+        """pick a random start_vertex then extract from heap until empty"""
         total_cost = 0
         start_vertex = randint(1, len(self.__vertecies)-1)
         self.__heap.delete(self.__vertex_to_heap[start_vertex])
@@ -54,7 +58,6 @@ class Graph():
             self.mark_visited(vertex)
             self.update_neighbors(vertex)
         return total_cost
-
 
     def update_neighbors(self, vertex):
         for neighbor, cost in self.__vertecies[vertex]['v']:
