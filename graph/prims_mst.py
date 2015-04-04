@@ -5,7 +5,10 @@
 
 from fibonacci_heap_mod import Fibonacci_heap
 from random import randint
-
+import threading
+import queue
+import sys
+import itertools
 
 class Graph():
     """simple Graph class to run Prim's MST algorithm"""
@@ -19,7 +22,7 @@ class Graph():
         """enqueue vertices into the heap with a starting high priority
            we will decrease it later when running prim's algorithm
         """
-        for x in range(1, len(self.__vertecies)):
+        for x in range(1, len(self.__vertices)):
             self.__vertex_to_heap[x] = self.__heap.enqueue(x, 999999999)
 
     def file_lines(self, file_name):
@@ -28,27 +31,34 @@ class Graph():
             for line in myfile:
                 yield line
 
+    def process_lines(self, in_queue, out_queue):
+
+        while True:
+            line = in_queue.get()
+
+            # exit signal
+            if line is None:
+                return
+            line_list = line.split()
+            # if len(line_list) == 3:
+            vertex, neighbor = int(line_list[0]), int(line_list[1])
+            cost = float(line_list[2])
+            out_queue.put(vertex, neighbor, cost)
+            in_queue.task_done()
+
     def parse_edges_from_file(self, line_seq):
         """get the number of vertices as given in the first line of file
            setup the vertices as a tuple so we don't waste memory
-           populate the __vertecies tuple with lists of tuples of vertex,cost
+           populate the __vertices tuple with lists of tuples of vertex,cost
         """
-        num_verticies = int(next(line_seq).split()[0])
-        self.__vertecies = tuple({'visited': False, 'v': []}
-                                 for n in range(num_verticies+1)
-                                 )
-
-        for line in line_seq:
-            line_list = line.split()
-            vertex, neighbor = int(line_list[0]), int(line_list[1])
-            cost = int(line_list[2])
-            self.__vertecies[vertex]['v'].append((neighbor, cost))
-            self.__vertecies[neighbor]['v'].append((vertex, cost))
+        num_vertices = int(next(line_seq).split()[0])
+        self.__vertices = [{ 'visited': False, 'v':[]}
+                                 for n in range(num_vertices+1)]
 
     def prim_mst(self):
         """pick a random start_vertex then extract from heap until empty"""
         total_cost = 0
-        start_vertex = randint(1, len(self.__vertecies)-1)
+        start_vertex = randint(1, len(self.__vertices)-1)
         self.__heap.delete(self.__vertex_to_heap[start_vertex])
         self.mark_visited(start_vertex)
         self.update_neighbors(start_vertex)
@@ -60,16 +70,48 @@ class Graph():
         return total_cost
 
     def update_neighbors(self, vertex):
-        for neighbor, cost in self.__vertecies[vertex]['v']:
+        for neighbor, cost in self.__vertices[vertex]['v']:
             heap_entry = self.__vertex_to_heap[neighbor]
             if not self.is_visited(neighbor) and cost < heap_entry.get_priority():
                 self.__heap.decrease_key(heap_entry, cost)
 
+    def vertices(self):
+        return self.__vertices
+
     def mark_visited(self, vertex):
-        self.__vertecies[vertex]['visited'] = True
+        self.__vertices[vertex]['visited'] = True
 
     def is_visited(self, vertex):
-        return self.__vertecies[vertex]['visited']
+        return self.__vertices[vertex]['visited']
 
-graph = Graph('../test_data/graph/edges.txt')
-print(graph.prim_mst())
+
+if __name__ == "__main__":
+    graph = Graph('../test_data/graph/largeEWG.txt')
+    num_workers = 6
+
+    work_queue = queue.Queue()
+    results = queue.Queue()
+
+    # start for workers
+    pool = []
+    for i in range(num_workers):
+        t = threading.Thread(target=graph.process_lines, args=(work_queue, results))
+        t.daemon = True
+        t.start()
+
+    # produce data
+    with open("../test_data/graph/largeEWG.txt") as f:
+        iters = itertools.chain(f, (None,)*num_workers)
+        next(iters)
+        next(iters)
+        for line in iters:
+            work_queue.put(line)
+
+
+    work_queue.join()
+
+    for i in range(results._qsize()):
+
+        print(results.get())
+    sys.exit()
+    # print(graph.prim_mst())
