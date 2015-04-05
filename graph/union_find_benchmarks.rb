@@ -62,7 +62,7 @@ class UnionFind
 
   def find_root_r(node)
     return node if node == @members[node]
-    @members[node] = find_root(@members[node])
+    @members[node] = find_root_r(@members[node])
   end
 
 end
