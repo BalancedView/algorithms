@@ -36,7 +36,8 @@ class UnionFind(object):
            of the UnionFind data structure. As we search for the root
            and go up the 'chain' we compress the path by assigning the
            root of each node to the root of their parent."""
-        while node != self.members[node]:
-            self.members[node] = self.members[self.members[node]]
-            node = self.members[node]
-        return node
+        if node == self.members[node]:
+            return node
+        else:
+            self.members[node] = self.find_root(self.members[node])
+            return self.members[node]
