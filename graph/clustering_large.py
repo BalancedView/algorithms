@@ -41,7 +41,8 @@ class Graph():
         for mask in self._bitmasks:
             for v_index, connected_vertex in enumerate(verticies ^ mask):
                 if self._verticies[connected_vertex]:
-                    self._union_find.union(verticies[v_index], connected_vertex)
+                    if verticies[v_index] < connected_vertex:
+                        self._union_find.union(verticies[v_index], connected_vertex)
         return self._union_find.sets
 
 # import profile
